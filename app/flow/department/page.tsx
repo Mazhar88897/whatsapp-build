@@ -77,7 +77,7 @@ export default function DepartmentPage() {
       setError(null)
       
       // Check if environment variable is set, otherwise use fallback
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://89f920c37057.ngrok-free.app/api'
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
       if (!apiBaseUrl) {
         throw new Error('API base URL is not configured. Please check your environment variables.')
       }
@@ -173,7 +173,7 @@ export default function DepartmentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://89f920c37057.ngrok-free.app/api'
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL 
       if (!apiBaseUrl) {
         throw new Error('API base URL is not configured')
       }
@@ -227,7 +227,7 @@ export default function DepartmentPage() {
   const handleDelete = async (departmentId: number) => {
     if (confirm('Are you sure you want to delete this department?')) {
       try {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://89f920c37057.ngrok-free.app/api'
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL 
         if (!apiBaseUrl) {
           throw new Error('API base URL is not configured')
         }

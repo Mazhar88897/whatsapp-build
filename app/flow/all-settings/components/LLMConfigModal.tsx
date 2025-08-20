@@ -39,6 +39,10 @@ export default function LLMConfigModal({ isOpen, onClose, model, onSuccess }: LL
     try {
       const tenantID = sessionStorage.getItem('tenantId')
       
+      if (!tenantID) {
+        throw new Error('Tenant ID not found. Please ensure you are properly authenticated.')
+      }
+      
       // Step 1: Create or Update API Key
       let apiKeyResponse
       try {

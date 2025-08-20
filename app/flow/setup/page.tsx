@@ -98,7 +98,7 @@ export default function SetupPage() {
         phone_number_id: '',
         verify_token: '',
         waba_id: '',
-        webhook_url: process.env.NEXT_PUBLIC_API_BASE_URL_WEBHOOK,
+        webhook_url: process.env.NEXT_PUBLIC_API_BASE_URL_WEBHOOK || '',
       },
       end_date: '2025-12-31T23:59:59Z',
       is_active: true,
