@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { getSessionStorageItem, clearSessionStorage } from "@/lib/utils";
 
-const menuOptions = [
+interface MenuOption {
+  icon: React.ReactNode;
+  text: string;
+  href: string;
+}
+
+const menuOptions: MenuOption[] = [
   // { icon: <User className="w-4 h-4 mr-2" />, text: "Chats", href: "/flow/chats" },
   // { icon: <Settings className="w-4 h-4 mr-2" />, text: "Settings", href: " /settings" },
   // { icon: <HelpCircle className="w-4 h-4 mr-2" />, text: "Help", href: "/help" },
@@ -32,7 +38,7 @@ export default function Topbar() {
       </div>
       {open && (
         <div className="absolute right-6 top-16 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 z-50">
-          {menuOptions.map((option, idx) => (
+          {menuOptions.length > 0 && menuOptions.map((option, idx) => (
             <Link href={option.href} key={idx} className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200">
               {option.icon}
               {option.text}
