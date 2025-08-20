@@ -77,7 +77,7 @@ export default function SetupPage() {
   const [loading, setLoading] = useState(false)
   const [editingConfig, setEditingConfig] = useState<PlatformConfigResponse | null>(null)
   const [copiedWebhook, setCopiedWebhook] = useState(false)
-  const [webhookUrl, setWebhookUrl] = useState(process.env.NEXT_PUBLIC_API_BASE_URL_WEBHOOK)
+  const [webhookUrl, setWebhookUrl] = useState(process.env.NEXT_PUBLIC_API_BASE_URL_WEBHOOK || '')
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [platformToDelete, setPlatformToDelete] = useState<string>('')
   const [editModalOpen, setEditModalOpen] = useState(false)
@@ -251,6 +251,11 @@ export default function SetupPage() {
 
   // Copy webhook URL
   const copyWebhookUrl = async () => {
+    if (!webhookUrl) {
+      toast.error('Webhook URL is not available')
+      return
+    }
+    
     try {
       await navigator.clipboard.writeText(webhookUrl)
       setCopiedWebhook(true)
