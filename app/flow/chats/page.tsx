@@ -1378,7 +1378,7 @@ export default function ChatsPage() {
                 placeholder={selectedFile ? "Add a caption..." : "Type a message..."}
                 value={selectedFile ? attachmentCaption : input}
                 onChange={e => selectedFile ? setAttachmentCaption(e.target.value) : setInput(e.target.value)}
-                disabled={selectedFile && !attachmentCaption.trim()}
+                disabled={!!selectedFile && !attachmentCaption.trim()}
               />
 
               {/* Send Button */}

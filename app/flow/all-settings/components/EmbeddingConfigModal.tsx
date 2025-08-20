@@ -46,6 +46,9 @@ export default function EmbeddingConfigModal({ isOpen, onClose, model, onSuccess
         throw new Error('Tenant ID not found. Please ensure you are properly authenticated.')
       }
       
+      // At this point, TypeScript should know tenantID is not null
+      const tenantIdString: string = tenantID
+      
       // Step 1: Create or Update API Key
       let apiKeyResponse
       try {
@@ -59,7 +62,7 @@ export default function EmbeddingConfigModal({ isOpen, onClose, model, onSuccess
           body: JSON.stringify({
             model_id: model.id,
             api_key: formData.api_key,
-            tenant_id: parseInt(tenantID)
+            tenant_id: parseInt(tenantIdString)
           })
         })
 
@@ -72,7 +75,7 @@ export default function EmbeddingConfigModal({ isOpen, onClose, model, onSuccess
           const errorData = await apiKeyResponse.json()
           if (errorData.detail && errorData.detail.includes('already exists')) {
             // API key exists, try to update it
-            const existingApiKeysResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai-config/api-keys/${tenantID}`, {
+            const existingApiKeysResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai-config/api-keys/${tenantIdString}`, {
               method: 'GET',
               headers: {
                 'accept': 'application/json',
