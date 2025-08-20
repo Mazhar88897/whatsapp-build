@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import { Loader2, MessageSquare, AlertCircle, UserPlus, UserMinus, Bot, User, BadgeCheck } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import axios from "axios"
@@ -373,7 +373,7 @@ export default function ChatsPage() {
     }
   }
 
-  const fetchConversation = async (conversationId: string | number) => {
+  const fetchConversation = useCallback(async (conversationId: string | number) => {
     try {
       setConversationError(null)
       setConversationLoadingId(conversationId)
@@ -429,13 +429,13 @@ export default function ChatsPage() {
     } finally {
       setConversationLoadingId(null)
     }
-  }
+  }, [selectedChatId])
 
   useEffect(() => {
     if (selectedChatId != null) {
       fetchConversation(selectedChatId)
     }
-  }, [selectedChatId])
+  }, [selectedChatId, fetchConversation])
 
   // Load/save AI toggle per conversation (UI-only for now)
   useEffect(() => {
@@ -706,7 +706,7 @@ export default function ChatsPage() {
     // Load initial conversation details
     fetchConversation(selectedChatId)
     return stop
-  }, [selectedChatId])
+  }, [selectedChatId, fetchConversation])
 
   // Cleanup effect to leave conversation when component unmounts or conversation changes
   useEffect(() => {
@@ -1000,7 +1000,7 @@ export default function ChatsPage() {
             {/* Search Results Counter */}
             {searchQuery && (
               <div className="mt-2 text-xs text-gray-500">
-                Found {uiChats.length} result{uiChats.length !== 1 ? 's' : ''} for "{searchQuery}"
+                Found {uiChats.length} result{uiChats.length !== 1 ? 's' : ''} for &quot;{searchQuery}&quot;
               </div>
             )}
           </div>
@@ -1042,7 +1042,7 @@ export default function ChatsPage() {
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500">
               {uiChats.length} conversation{uiChats.length !== 1 ? 's' : ''} 
-              {searchQuery && ` • "${searchQuery}"`}
+              {searchQuery && ` • &quot;${searchQuery}&quot;`}
               {aiFilter !== 'all' && ` • AI ${aiFilter}`}
               {departmentFilter !== 'all' && departments.find(d => d.id.toString() === departmentFilter.toString()) && 
                 ` • ${departments.find(d => d.id.toString() === departmentFilter.toString())?.name}`
@@ -1385,13 +1385,13 @@ export default function ChatsPage() {
             <button
               type="submit"
                 disabled={
-                  Boolean(sending) || 
-                  Boolean(uploadingAttachment) || 
+                  !!sending || 
+                  !!uploadingAttachment || 
                   (selectedFile ? !attachmentCaption.trim() : !input.trim())
                 }
-                aria-busy={Boolean(sending || uploadingAttachment)}
+                aria-busy={!!(sending || uploadingAttachment)}
                 className={`bg-green-400 text-white font-semibold px-6 py-2 rounded-full transition-colors ${
-                  (Boolean(sending) || Boolean(uploadingAttachment) || (selectedFile ? !attachmentCaption.trim() : !input.trim())) 
+                  (!!sending || !!uploadingAttachment || (selectedFile ? !attachmentCaption.trim() : !input.trim())) 
                     ? 'opacity-60 cursor-not-allowed' 
                     : 'hover:bg-green-500'
                 }`}
